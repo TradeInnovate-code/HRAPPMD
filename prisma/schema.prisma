@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             String        @id @default(cuid())
+  clerkId        String        @unique
+  email          String        @unique
+  name           String?
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([organizationId])
+}
+
+model Organization {
+  id            String       @id @default(cuid())
+  name          String
+  industry      String?
+  employeeCount Int?
+  maturityScore Int?
+  users         User[]
+  audits        Audit[]
+  roles         Role[]
+  raciMatrices  RaciMatrix[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Audit {
+  id             String        @id @default(cuid())
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  status         String        @default("in_progress")
+  version        String        @default("1.0")
+  score          Int?
+  resultJson     Json?
+  answers        AuditAnswer[]
+  startedAt      DateTime      @default(now())
+  completedAt    DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([organizationId])
+}
+
+model AuditAnswer {
+  id          String   @id @default(cuid())
+  auditId     String
+  audit       Audit    @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  questionKey String
+  answerValue String?
+  answerText  String?
+  createdAt   DateTime @default(now())
+
+  @@index([auditId])
+}
+
+model Role {
+  id              String           @id @default(cuid())
+  organizationId  String
+  organization    Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  title           String
+  department      String?
+  level           String?
+  jobDescriptions JobDescription[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([organizationId])
+}
+
+model JobDescription {
+  id                   String   @id @default(cuid())
+  roleId               String
+  role                 Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  status               String   @default("draft")
+  responsibilitiesJson Json
+  competenciesJson     Json
+  kpisJson             Json
+  rawPromptVersion     String?
+  rawAiOutputJson      Json?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([roleId])
+}
+
+model RaciMatrix {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  version        String       @default("1.0")
+  matrixJson     Json
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId])
+}
+
+model DocumentTemplate {
+  id             String       @id @default(cuid())
+  organizationId String
+  type           String
+  name           String
+  description    String?
+  contentJson    Json
+  version        String       @default("1.0")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId])
+  @@index([type])
+}
+
+model ExportJob {
+  id         String   @id @default(cuid())
+  userId     String
+  entityType String
+  entityId   String
+  format     String
+  status     String   @default("pending")
+  fileUrl    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+}
