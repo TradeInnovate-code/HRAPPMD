@@ -19,7 +19,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Audit', href: '/audit', icon: ClipboardCheck },
   { name: 'Job Descriptions', href: '/job-descriptions', icon: FileText },
-  { name: 'RACI Matrix', href: '/raci', icon: Grid3X3 },
+  { name: 'RACI', href: '/raci', icon: Grid3X3 },
   { name: 'Library', href: '/library', icon: Library },
   { name: 'Results', href: '/results', icon: BarChart3 },
 ];
