@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { LogoMark } from '@/components/logo';
+import { useLanguage } from '@/lib/language-context';
 import {
   LayoutDashboard,
   ClipboardCheck,
@@ -15,16 +16,16 @@ import {
   ChevronLeft,
 } from 'lucide-react';
 
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Audit', href: '/audit', icon: ClipboardCheck },
-  { name: 'Job Descriptions', href: '/job-descriptions', icon: FileText },
-  { name: 'RACI', href: '/raci', icon: Grid3X3 },
-  { name: 'Library', href: '/library', icon: Library },
-  { name: 'Results', href: '/results', icon: BarChart3 },
+const navigationKeys = [
+  { nameKey: 'nav.dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { nameKey: 'nav.audit', href: '/audit', icon: ClipboardCheck },
+  { nameKey: 'nav.jobDescriptions', href: '/job-descriptions', icon: FileText },
+  { nameKey: 'nav.raci', href: '/raci', icon: Grid3X3 },
+  { nameKey: 'nav.library', href: '/library', icon: Library },
+  { nameKey: 'nav.results', href: '/results', icon: BarChart3 },
 ];
 
-const bottomNavigation = [{ name: 'Settings', href: '/settings', icon: Settings }];
+const bottomNavigationKeys = [{ nameKey: 'nav.settings', href: '/settings', icon: Settings }];
 
 interface SidebarProps {
   collapsed: boolean;
@@ -33,6 +34,7 @@ interface SidebarProps {
 
 export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const pathname = usePathname();
+  const { t } = useLanguage();
 
   return (
     <aside
@@ -49,11 +51,11 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 p-3">
-        {navigation.map((item) => {
+        {navigationKeys.map((item) => {
           const isActive = pathname.startsWith(item.href);
           return (
             <Link
-              key={item.name}
+              key={item.href}
               href={item.href}
               className={cn(
                 'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
@@ -64,7 +66,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               )}
             >
               <item.icon className="h-5 w-5 shrink-0" />
-              {!collapsed && <span>{item.name}</span>}
+              {!collapsed && <span>{t(item.nameKey)}</span>}
             </Link>
           );
         })}
@@ -72,11 +74,11 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       {/* Bottom */}
       <div className="border-t border-border p-3 space-y-1">
-        {bottomNavigation.map((item) => {
+        {bottomNavigationKeys.map((item) => {
           const isActive = pathname.startsWith(item.href);
           return (
             <Link
-              key={item.name}
+              key={item.href}
               href={item.href}
               className={cn(
                 'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
@@ -87,7 +89,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               )}
             >
               <item.icon className="h-5 w-5 shrink-0" />
-              {!collapsed && <span>{item.name}</span>}
+              {!collapsed && <span>{t(item.nameKey)}</span>}
             </Link>
           );
         })}
@@ -105,7 +107,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               collapsed && 'rotate-180',
             )}
           />
-          {!collapsed && <span>Collapse</span>}
+          {!collapsed && <span>{t('sidebar.collapse')}</span>}
         </button>
       </div>
     </aside>
