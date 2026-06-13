@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Download, FileDown, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { motionPresets } from '@/lib/utils/motion';
+import { useLanguage } from '@/lib/language-context';
 
 const STATUS_MAP: Record<string, { icon: React.ElementType; color: string }> = {
   pending: { icon: Clock, color: 'text-[#3291C9]' },
@@ -25,6 +26,7 @@ interface ExportItem {
 }
 
 export default function ResultsPage() {
+  const { t } = useLanguage();
   const [exports, setExports] = useState<ExportItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,8 +40,8 @@ export default function ResultsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Results & Exports"
-        description="View and download your generated exports."
+        title={t('results.title')}
+        description={t('results.description')}
       />
 
       {loading ? (
@@ -55,10 +57,9 @@ export default function ResultsPage() {
               <div className="rounded-full bg-primary/10 p-4 mb-4">
                 <FileDown className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold mb-1">No exports yet</h3>
+              <h3 className="text-lg font-semibold mb-1">{t('results.noExports')}</h3>
               <p className="text-sm text-muted-foreground max-w-sm">
-                Export audits, job descriptions, or RACI matrices to PDF, DOCX, or CSV from their
-                respective pages.
+                {t('results.noExportsDescription')}
               </p>
             </CardContent>
           </Card>
@@ -66,7 +67,7 @@ export default function ResultsPage() {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Export History</CardTitle>
+            <CardTitle className="text-base">{t('results.exportHistory')}</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <div className="divide-y">

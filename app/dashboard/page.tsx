@@ -1,15 +1,20 @@
+'use client';
+
 import { PageHeader } from '@/components/layout/page-header';
 import { ScoreCard } from '@/components/dashboard/score-card';
 import { IssueListCard } from '@/components/dashboard/issue-list-card';
 import { QuickActionCard } from '@/components/dashboard/quick-action-card';
 import { ProgressWidget } from '@/components/dashboard/progress-widget';
+import { useLanguage } from '@/lib/language-context';
 
 export default function DashboardPage() {
+  const { t } = useLanguage();
+
   return (
     <div>
       <PageHeader
-        title="Welcome to HRI"
-        description="Your AI-powered HR intelligence dashboard. Start by running an organizational audit."
+        title={t('dashboard.title')}
+        description={t('dashboard.description')}
       />
 
       {/* Score + Progress Row */}
@@ -17,10 +22,10 @@ export default function DashboardPage() {
         <ScoreCard score={null} />
         <ProgressWidget
           items={[
-            { label: 'Audit', completed: false },
-            { label: 'Job Descriptions', completed: false },
-            { label: 'RACI Matrix', completed: false },
-            { label: 'Exports', completed: false },
+            { label: t('dashboard.auditLabel'), completed: false },
+            { label: t('dashboard.jobDescriptionsLabel'), completed: false },
+            { label: t('dashboard.raciMatrixLabel'), completed: false },
+            { label: t('dashboard.exportsLabel'), completed: false },
           ]}
         />
         <QuickActionCard />

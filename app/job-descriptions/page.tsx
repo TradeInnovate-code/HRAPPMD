@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, FileText, Building2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { motionPresets } from '@/lib/utils/motion';
+import { useLanguage } from '@/lib/language-context';
 
 interface JDListItem {
   id: string;
@@ -21,6 +22,7 @@ interface JDListItem {
 }
 
 export default function JobDescriptionsPage() {
+  const { t } = useLanguage();
   const [jds, setJds] = useState<JDListItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,13 +38,13 @@ export default function JobDescriptionsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Job Descriptions"
-        description="AI-generated role profiles with responsibilities, competencies, and KPIs."
+        title={t('jobDescriptions.title')}
+        description={t('jobDescriptions.description')}
       >
         <Link href="/job-descriptions/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            Generate New
+            {t('jobDescriptions.generateNew')}
           </Button>
         </Link>
       </PageHeader>
@@ -60,14 +62,14 @@ export default function JobDescriptionsPage() {
               <div className="rounded-full bg-primary/10 p-4 mb-4">
                 <FileText className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold mb-1">No job descriptions yet</h3>
+              <h3 className="text-lg font-semibold mb-1">{t('jobDescriptions.noJobDescriptions')}</h3>
               <p className="text-sm text-muted-foreground mb-6 max-w-sm">
-                Generate your first AI-powered job description to define clear role expectations.
+                {t('jobDescriptions.noJobDescriptionsDescription')}
               </p>
               <Link href="/job-descriptions/new">
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
-                  Generate First JD
+                  {t('jobDescriptions.generateFirstJD')}
                 </Button>
               </Link>
             </CardContent>

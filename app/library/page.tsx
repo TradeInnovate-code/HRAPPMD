@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, FolderOpen, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { motionPresets } from '@/lib/utils/motion';
+import { useLanguage } from '@/lib/language-context';
 
 const TYPE_COLORS: Record<string, string> = {
   policy: 'bg-[#1F2179]/10 text-[#1F2179]',
@@ -27,6 +28,7 @@ interface TemplateListItem {
 }
 
 export default function LibraryPage() {
+  const { t } = useLanguage();
   const [templates, setTemplates] = useState<TemplateListItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -40,13 +42,13 @@ export default function LibraryPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Template Library"
-        description="Manage HR document templates — policies, procedures, checklists, and forms."
+        title={t('library.title')}
+        description={t('library.description')}
       >
         <Link href="/library/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            New Template
+            {t('library.newTemplate')}
           </Button>
         </Link>
       </PageHeader>
@@ -64,14 +66,14 @@ export default function LibraryPage() {
               <div className="rounded-full bg-primary/10 p-4 mb-4">
                 <FolderOpen className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold mb-1">No templates yet</h3>
+              <h3 className="text-lg font-semibold mb-1">{t('library.noTemplates')}</h3>
               <p className="text-sm text-muted-foreground mb-6 max-w-sm">
-                Create your first HR document template to standardize your processes.
+                {t('library.noTemplatesDescription')}
               </p>
               <Link href="/library/new">
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
-                  Create First Template
+                  {t('library.createFirstTemplate')}
                 </Button>
               </Link>
             </CardContent>

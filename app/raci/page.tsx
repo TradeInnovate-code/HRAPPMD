@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, Grid3X3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { motionPresets } from '@/lib/utils/motion';
+import { useLanguage } from '@/lib/language-context';
 
 interface RaciListItem {
   id: string;
@@ -18,6 +19,7 @@ interface RaciListItem {
 }
 
 export default function RaciPage() {
+  const { t } = useLanguage();
   const [matrices, setMatrices] = useState<RaciListItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,13 +33,13 @@ export default function RaciPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="RACI Matrices"
-        description="Define accountability for every process and activity in your organization."
+        title={t('raci.title')}
+        description={t('raci.description')}
       >
         <Link href="/raci/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            New Matrix
+            {t('raci.newMatrix')}
           </Button>
         </Link>
       </PageHeader>
@@ -55,15 +57,14 @@ export default function RaciPage() {
               <div className="rounded-full bg-primary/10 p-4 mb-4">
                 <Grid3X3 className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold mb-1">No RACI matrices yet</h3>
+              <h3 className="text-lg font-semibold mb-1">{t('raci.noMatrices')}</h3>
               <p className="text-sm text-muted-foreground mb-6 max-w-sm">
-                Create your first RACI matrix to clarify who is Responsible, Accountable, Consulted,
-                and Informed.
+                {t('raci.noMatricesDescription')}
               </p>
               <Link href="/raci/new">
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
-                  Create First Matrix
+                  {t('raci.createFirstMatrix')}
                 </Button>
               </Link>
             </CardContent>
@@ -89,7 +90,7 @@ export default function RaciPage() {
                       </Badge>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Created {new Date(m.createdAt).toLocaleDateString()}
+                      {t('raci.created')} {new Date(m.createdAt).toLocaleDateString()}
                     </p>
                   </CardContent>
                 </Card>
