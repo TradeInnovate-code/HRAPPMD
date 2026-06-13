@@ -13,13 +13,13 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<Language>('en');
-  const [mounted, setMounted] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     // Get stored language preference
     const stored = (localStorage.getItem('hri-language') as Language) || 'en';
     setLanguageState(stored);
-    setMounted(true);
   }, []);
 
   const setLanguage = (lang: Language) => {
@@ -39,10 +39,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
     return typeof value === 'string' ? value : defaultValue || path;
   };
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
